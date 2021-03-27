@@ -4,6 +4,7 @@ import numpy as np
 from ortools.linear_solver import pywraplp
 from math import sqrt
 import time
+import pandas as pd
 
 class point:
     def __init__(self,x,y):
@@ -203,14 +204,21 @@ r=60
 Area=1000
 Base=[0,0]
 res=[]
+i=0
+writer = pd.ExcelWriter('D:/test Q-Coverage.xlsx', engine='xlsxwriter')
 for n in [10,20,50,100,200,500,1000]:
 #solve
     q=np.random.randint(1,30,n).tolist()
     tList=np.random.randint(0,Area,(n,2)).tolist()
+    df = pd.DataFrame({'x':[i[0] for i in tList] ,'y':[j[1] for j in tList]})
+    df.to_excel(writer, sheet_name="Target test "+str(i+1))
+    i+=1
     regions=findAllCriticalRegions(tList)
 #print(regions)
     x=solve(tList,regions,q)
     res.append(np.sum(np.array(x)))
+writer.save()
+print(res)
 plt.plot([10,20,50,100,200,500,1000],res)
 plt.show()
 #for i in range(len(regions)):
@@ -222,9 +230,9 @@ plt.show()
 #    ax.add_patch(plt.Circle((tList[x][0], tList[x][1]), r, color='r', alpha=0.2))
 #    plt.plot(tList[x][0],tList[x][1],'b*')
 #    plt.text(tList[x][0],tList[x][1],str(x))
-    #for x in range(len(sList)):
-    #    plt.plot(sList[x][0],sList[x][1],'r*')
-    #    plt.text(sList[x][0],sList[x][1],str(x))
+#for x in range(len(sList)):
+#    plt.plot(sList[x][0],sList[x][1],'r*')
+#    plt.text(sList[x][0],sList[x][1],str(x))
 #plt.plot(Base[0],Base[1],"r*",markersize=5)
 #plt.text(Base[0],Base[1],"Base",horizontalalignment="center",verticalalignment="top",fontsize=12)
 #ax.set_aspect('equal', adjustable='datalim')

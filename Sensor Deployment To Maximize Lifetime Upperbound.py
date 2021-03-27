@@ -1,13 +1,13 @@
 # We will find a way to deploy sensor so that the upperbound for network lifetime is maximized
 import numpy as np
-from math import sqrt,sin,cos,pi
+from math import sqrt,sin,cos,pi,floor
 import matplotlib.pyplot as plt
 import random
 
-r=20
-Area=100
-n=10
-m=20
+r=70
+Area=200
+n=30
+m=100
 
 class point:
     def __init__(self,x,y):
@@ -96,7 +96,7 @@ def mainMove(tList,sList):
 def LifetimeUpperbound(M):
     lt=[]
     for j in range(n):
-        lt.append(sum([M[i][j]*b[i] for i in range(m)])//q[j])
+        lt.append(floor(sum([M[i][j]*b[i] for i in range(m)])/q[j]))
     return min(lt)
         
 def randomInsideCircle(tList,i):
